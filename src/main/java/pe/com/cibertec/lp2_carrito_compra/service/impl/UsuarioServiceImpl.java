@@ -29,4 +29,25 @@ public class UsuarioServiceImpl implements UsuarioService{
 		usuarioRepository.save(usuarioEntity);	
 	}
 
+	@Override
+	public boolean validarUsuario(UsuarioEntity usuarioFormulario) {
+		// 1. Recuperar el usuario por correo
+		UsuarioEntity usuarioEncontrado = usuarioRepository
+				.findByCorreo(usuarioFormulario.getCorreo());
+		
+		// correo existe en la base de datos?
+		if(usuarioEncontrado == null) {
+			return false;
+		}
+		
+		// 2. Validar password input con el hash de la base de datos
+		if(!Utilitarios.checkPassword(usuarioFormulario.getPassword(), 
+				usuarioEncontrado.getPassword())) {
+			return false;
+		}
+		
+		//3. login exitoso
+		return true;
+	}
+
 }

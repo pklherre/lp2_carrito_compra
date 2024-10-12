@@ -6,4 +6,5 @@ import pe.com.cibertec.lp2_carrito_compra.model.entity.UsuarioEntity;
 
 public interface UsuarioService {
 	void crearUsuario(UsuarioEntity usuarioEntity, MultipartFile foto);
+	boolean validarUsuario(UsuarioEntity usuarioEntity);
 }
