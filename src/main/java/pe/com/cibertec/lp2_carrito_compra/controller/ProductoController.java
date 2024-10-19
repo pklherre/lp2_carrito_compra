@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
+import pe.com.cibertec.lp2_carrito_compra.model.entity.DetallePedidoEntity;
 import pe.com.cibertec.lp2_carrito_compra.model.entity.Pedido;
 import pe.com.cibertec.lp2_carrito_compra.model.entity.ProductoEntity;
 import pe.com.cibertec.lp2_carrito_compra.model.entity.UsuarioEntity;
@@ -45,6 +46,23 @@ public class ProductoController {
 		}
 		model.addAttribute("cant_carrito", productoSesion.size());
 		
+		// Ver carrito con datos
+		List<DetallePedidoEntity>detallePedidoEntity = new ArrayList<>();
+		Double totalPedido = 0.0;
+		
+		for(Pedido pedido: productoSesion) {
+			DetallePedidoEntity det = new DetallePedidoEntity();
+			ProductoEntity pro = productoService.buscarProductoPorId(
+					pedido.getProductoId());
+			det.setProductoEntity(pro);
+			det.setCantidad(pedido.getCantidad());
+			detallePedidoEntity.add(det);
+			totalPedido += pedido.getCantidad() * pro.getPrecio();
+		}
+		
+		model.addAttribute("carrito", detallePedidoEntity);
+		model.addAttribute("total", totalPedido);
+		// fin ver carrito con datos
 		List<ProductoEntity>listaProductos = productoService.buscarTodosProductos();
 		model.addAttribute("productos", listaProductos);
 		return "menu";
