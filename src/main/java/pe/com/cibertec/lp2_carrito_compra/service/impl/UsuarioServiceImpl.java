@@ -50,4 +50,10 @@ public class UsuarioServiceImpl implements UsuarioService{
 		return true;
 	}
 
+	@Override
+	public UsuarioEntity buscarUsuarioPorCorreo(String correo) {
+		// TODO Auto-generated method stub
+		return usuarioRepository.findByCorreo(correo);
+	}
+
 }
